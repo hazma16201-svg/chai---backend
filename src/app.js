@@ -1,5 +1,6 @@
 import express from "express"
 import cors from "cors"
+import { registerUser } from "./controllers/user.controller.js";
 import cookieParser from "cookie-parser"
 
 const app = express()
