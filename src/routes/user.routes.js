@@ -1,10 +1,20 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.controller.js";
+import {refreshAccessToken} from "../controllers/user.controller.js"
+import {
+    loginUser,
+    logoutUser,
+    registerUser,
+    updateAccountDetails,
+    getCurrentUser,
+    changeCurrentPassword
+    // updateAccountDetails 
+} from "../controllers/user.controller.js";
 import {upload} from "../middlewares/multer.middleware.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 
+// Register Route
 router.route("/register").post(
     upload.fields([
         {
@@ -17,12 +27,20 @@ router.route("/register").post(
         }
     ]),
     registerUser
-    )
+    );
 
-//     router.route("/login").post(loginUser)
+router.route("/login").post(loginUser);
 
 // //secured routes
-// router.route("/logout").post(verifyJWT,  logoutUser)
+router.route("/logout").post(verifyJWT,  logoutUser);
+
+router.route("/refresh-token").post(refreshAccessToken);
+
+router.route("/current-user").get(verifyJWT, getCurrentUser);
+
+router.route("/change-password").post(verifyJWT, changeCurrentPassword);
+
+router.route("/update-account").patch(verifyJWT, updateAccountDetails);
 
 
-export default router
+export default router;
